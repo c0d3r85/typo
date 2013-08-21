@@ -180,7 +180,11 @@ class Admin::ContentController < Admin::BaseController
     @images = Resource.images_by_created_at.page(params[:page]).per(10)
     @resources = Resource.without_images_by_filename
     @macros = TextFilter.macro_filters
-    render 'new'
+	if current_user.profile.id == 1
+	    render 'new_with_merge' 
+	else
+		render 'new'
+	end
   end
 
   def set_the_flash

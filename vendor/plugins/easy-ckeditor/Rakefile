@@ -1,6 +1,6 @@
 require 'rake'
 require 'rake/testtask'
-require 'rake/packagetask'
+require 'rubygems/package_task'
 require 'rake/rdoctask'
 require 'find'
 
@@ -49,7 +49,7 @@ end
 
 # "Gem" part of the Rakefile
 begin
-  require 'rake/gempackagetask'
+  require 'rubygems/packagetask'
 
   spec = Gem::Specification.new do |s|
           s.platform = Gem::Platform::RUBY
@@ -63,7 +63,7 @@ begin
 
   desc "Create gem package for CKeditor plugin"
   task :package_gem
-  Rake::GemPackageTask.new(spec) do |pkg|
+  Gem::PackageTask.new(spec) do |pkg|
           pkg.need_zip = true
           pkg.need_tar = true
   end

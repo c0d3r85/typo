@@ -43,6 +43,26 @@ Given /^the blog is set up$/ do
                 :state => 'active'})
 end
 
+Given /^the publisher user exists$/ do
+	User.create!({:login => 'publisher',
+				 :password => 'pppppppp',
+				 :email => 'pub@mail.ru',
+				 :profile_id => 2,
+				 :name => 'publisher',
+				 :state => 'active'
+	})
+end
+
+Given /^the contributor user exists$/ do
+	User.create!({:login => 'contributor',
+				 :password => 'cccccccc',
+				 :email => 'contrib@mail.ru',
+				 :profile_id => 3,
+				 :name => 'contributor',
+				 :state => 'active'
+	})
+end
+
 And /^I am logged into the admin panel$/ do
   visit '/accounts/login'
   fill_in 'user_login', :with => 'admin'
@@ -53,6 +73,44 @@ And /^I am logged into the admin panel$/ do
   else
     assert page.has_content?('Login successful')
   end
+end
+
+And /^I am logged in as publisher$/ do
+  visit '/accounts/login'
+  fill_in 'user_login', :with => 'publisher'
+  fill_in 'user_password', :with => 'pppppppp'
+  click_button 'Login'
+  if page.respond_to? :should
+    page.should have_content('Login successful')
+  else
+    assert page.has_content?('Login successful')
+  end
+end
+
+And /^I am logged in as contributor$/ do
+  visit '/accounts/login'
+  fill_in 'user_login', :with => 'contributor'
+  fill_in 'user_password', :with => 'cccccccc'
+  click_button 'Login'
+  if page.respond_to? :should
+    page.should have_content('Login successful')
+  else
+    assert page.has_content?('Login successful')
+  end
+end
+
+Then /^I should see element with id "([^"]+)"$/ do |id_name|
+	assert page.find("##{id_name}")
+end
+
+Then /^I should not see element with id "([^"]+)"$/ do |id_name|
+	result = false
+	begin
+		page.find("##{id_name}")
+	rescue Capybara::ElementNotFound
+		result = true
+	end
+	assert result
 end
 
 # Single-line step scoper
