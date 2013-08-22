@@ -88,6 +88,8 @@ class Article < Content
 	  end
 
 	  merged_article.save!
+	  Article.destroy(self.id)
+	  Article.destroy(other_article_id)
 	  return merged_article
   end
 
