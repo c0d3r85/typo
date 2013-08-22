@@ -80,11 +80,15 @@ class Article < Content
 	  merged_article.body += other_article.body
 
 	  self.comments.each do |comment|
-		  merged_article.comments << comment.clone
+		  #merged_article.comments << comment.clone
+		  comment.article = merged_article
+		  comment.save!
 	  end
 
 	  other_article.comments.each do |comment|
-		  merged_article.comments << comment.clone
+		  #merged_article.comments << comment.clone
+		  comment.article = merged_article
+		  comment.save!
 	  end
 
 	  merged_article.save!
